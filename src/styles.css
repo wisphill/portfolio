@@ -29,9 +29,6 @@
   --moon: #c8473a;
   --moon-crater: #b33b31;
   --moon-glow: #e8735a66;
-  --eye-white: #fff3e4;
-  --eye-ink: #4a2427;
-  --eye-lens: #fff3e4;
   --moon-halo: #f6b896;
   --ring: #b97a3a;
   --cloud: #fff6ec;
@@ -68,9 +65,6 @@
   --moon: #b8302a;
   --moon-crater: #9c2622;
   --moon-glow: #e2552f80;
-  --eye-white: #f2804c;
-  --eye-ink: #0c0506;
-  --eye-lens: #ffd28a;
   --moon-halo: #e2552f;
   --ring: #f2bf6c;
   --cloud: #5c2421;
@@ -154,19 +148,19 @@ p { font-size: 18px; line-height: 1.7; }
 .hero-card { position: relative; margin: 0; transform: rotate(3deg); animation: card-float 8s ease-in-out infinite; will-change: transform; }
 .hero-card img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid var(--card-face); box-shadow: 0 0 60px var(--moon-halo), 0 22px 44px #2a0e0a40; }
 .hero-card figcaption { width: fit-content; margin: 16px auto 0; padding: 6px 16px; border-radius: 999px; background: var(--surface); color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
-.fool-eye { position: absolute; left: -250px; top: -20px; width: 400px; aspect-ratio: 560 / 580; pointer-events: none; }
-.fool-eye::before { content: ''; position: absolute; inset: -12%; background: radial-gradient(closest-side, var(--moon-halo), transparent); opacity: .55; }
-.fool-eye-float { position: absolute; inset: 0; animation: haunt 11s ease-in-out infinite; will-change: transform, opacity; }
-.fool-eye svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.crimson-moon { position: absolute; left: -200px; top: 20px; width: 300px; aspect-ratio: 1; pointer-events: none; animation: moon-orbit 30s ease-in-out infinite; will-change: transform; }
-.crimson-moon::before { content: ""; position: absolute; inset: -18%; border-radius: 50%; background: radial-gradient(closest-side, var(--moon-glow), transparent); }
-.crimson-moon svg { position: relative; display: block; width: 100%; height: 100%; }
-.moon-disc { fill: var(--moon); }
-.moon-crater { fill: var(--moon-crater); }
-.fool-eye-inner { transform-origin: 50% 46.5%; animation: blink 9s ease-in-out infinite; will-change: transform; }
-.eye-ink { fill: var(--eye-ink); stroke: var(--eye-ink); stroke-width: 16; stroke-linejoin: round; }
-.eye-white { fill: var(--eye-white); stroke: var(--eye-white); stroke-width: 10; stroke-linejoin: round; }
-.eye-lens { fill: var(--eye-lens); }
+.sky-eye { position: absolute; z-index: -1; left: calc(55% - 380px); top: -130px; width: 760px; aspect-ratio: 560 / 580; pointer-events: none; color: var(--town-far); -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 88%); mask-image: linear-gradient(to bottom, #000 30%, transparent 88%); transform-origin: 50% 46.5%; will-change: transform; }
+.sky-eye-fade, .sky-eye-bob { position: absolute; inset: 0; }
+.sky-eye-fade { opacity: 0; animation: eye-appear 11s ease-in-out infinite; will-change: opacity; }
+.sky-eye-bob { animation: eye-bob 6s ease-in-out infinite alternate; will-change: transform; }
+.eye-defs { position: absolute; }
+.eye-frame { position: absolute; inset: 0; width: 100%; height: 100%; fill: currentColor; stroke: currentColor; stroke-width: 16; stroke-linejoin: round; }
+.eye-socket { position: absolute; left: 13.04%; top: 36.72%; width: 73.93%; height: 19.66%; clip-path: url(#eye-socket-clip); }
+.eye-iris { position: absolute; left: 31.9%; top: -15.8%; width: 36.2%; height: 131.6%; fill: currentColor; animation: look-around 16s ease-in-out infinite; will-change: transform; }
+.eye-lid { position: absolute; inset: -4% -2%; width: 104%; height: 108%; fill: currentColor; transform-origin: top; transform: scaleY(0); animation: eyelid 9s ease-in-out infinite; will-change: transform; }
+.crescent-moon { position: absolute; z-index: -1; left: calc(55% - 70px); top: -6px; width: 200px; aspect-ratio: 1; pointer-events: none; animation: moon-orbit 30s ease-in-out infinite; will-change: transform; }
+.crescent-moon::before { content: ""; position: absolute; inset: -10%; border-radius: 50%; background: radial-gradient(closest-side, var(--moon-glow), transparent); }
+.crescent-moon svg { position: relative; display: block; width: 100%; height: 100%; }
+.moon-disc { fill: url(#moon-shade); stroke: var(--moon); stroke-width: 12; stroke-linejoin: round; }
 .mini-card { position: absolute; width: 68px; height: 100px; pointer-events: none; animation: bob 7s ease-in-out infinite; will-change: transform; }
 .mini-card-left { left: -130px; bottom: 70px; }
 .mini-card-right { right: -80px; top: 52%; animation-delay: -3s; }
@@ -279,9 +273,23 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 
 @keyframes drift { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
 @keyframes glide { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-40px, 14px, 0); } }
-@keyframes haunt { 0%, 100% { opacity: 1; transform: translate3d(0, 0, 0); } 50% { opacity: .3; transform: translate3d(10px, -12px, 0); } }
-@keyframes moon-orbit { 0%, 100% { transform: translate3d(-40px, 12px, 0); } 50% { transform: translate3d(40px, -16px, 0); } }
-@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } }
+@keyframes eye-appear { 0%, 100% { opacity: 0; } 18%, 72% { opacity: 1; } 90% { opacity: 0; } }
+@keyframes eye-bob { from { transform: translate3d(0, -14px, 0); } to { transform: translate3d(0, 14px, 0); } }
+@keyframes look-around {
+  0%, 8% { transform: translate3d(0, 0, 0); }
+  14%, 28% { transform: translate3d(-78%, 0, 0); }
+  34%, 48% { transform: translate3d(78%, 0, 0); }
+  56% { transform: translate3d(55%, -14%, 0); }
+  62% { transform: translate3d(0, -18%, 0); }
+  68% { transform: translate3d(-55%, -14%, 0); }
+  74% { transform: translate3d(-78%, 0, 0); }
+  80% { transform: translate3d(-55%, 12%, 0); }
+  86% { transform: translate3d(0, 16%, 0); }
+  92% { transform: translate3d(55%, 12%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+@keyframes eyelid { 0%, 40%, 47%, 88%, 95%, 100% { transform: scaleY(0); } 43.5%, 91.5% { transform: scaleY(1); } }
+@keyframes moon-orbit { 0%, 100% { transform: translate3d(-40px, 12px, 0) rotate(-6deg); } 50% { transform: translate3d(40px, -14px, 0) rotate(6deg); } }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes card-float { 0%, 100% { transform: rotate(3deg) translateY(0); } 50% { transform: rotate(1.5deg) translateY(-10px); } }
 @keyframes twinkle { from { opacity: 1; } to { opacity: .35; } }
@@ -293,8 +301,8 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 
 @media (max-width: 1024px) {
   .hero-content { padding-left: 44px; }
-  .fool-eye { left: -165px; top: 0; width: 280px; }
-  .crimson-moon { left: -140px; top: 20px; width: 230px; }
+  .sky-eye { left: calc(52% - 310px); top: -100px; width: 620px; }
+  .crescent-moon { left: calc(52% - 60px); width: 160px; }
   .mini-card-left { left: -90px; }
   .project-grid, .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .skill-card:last-child { grid-column: 1 / -1; }
@@ -316,13 +324,13 @@ details[open] > summary > .icon { transform: rotate(180deg); }
   .scene-layer { top: auto; height: 520px; }
   .bird-layer { display: none; }
   .town-strip { width: 1800px; height: 225px; }
-  .crimson-moon { left: 50%; top: -226px; width: 230px; margin-left: -115px; }
+  .sky-eye { left: calc(50% - 240px); top: -40px; width: 480px; }
+  .crescent-moon { left: auto; right: -14px; top: 12px; width: 120px; }
   .hero-content { padding: 44px 24px 0; max-width: none; }
   .hero h1 { font-size: clamp(36px, 9vw, 52px); }
   .hero-description { font-size: 18px; margin-inline: auto; }
   .hero-actions { justify-content: center; }
-  .hero-art { width: min(240px, 70%); margin: 250px 0 48px; }
-  .fool-eye { left: 50%; top: -250px; width: 300px; transform: translateX(-50%); }
+  .hero-art { width: min(240px, 70%); margin: 40px 0 48px; }
   .mini-card { width: 48px; height: 70px; }
   .mini-card-left { left: -50px; bottom: 90px; }
   .mini-card-right { right: -50px; top: 30%; }
@@ -352,12 +360,12 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 }
 
 html[data-motion='off'] { scroll-behavior: auto; }
-html[data-motion='off'] .reveal { opacity: 1; transform: none; }
+html[data-motion='off'] .reveal, html[data-motion='off'] .sky-eye-fade { opacity: 1; transform: none; }
 html[data-motion='off'] *, html[data-motion='off'] *::before, html[data-motion='off'] *::after { animation: none !important; transition: none !important; }
 html[data-motion='off'] .project-card:hover, html[data-motion='off'] .button:hover, html[data-motion='off'] .project-card:hover .artifact-symbol { transform: none; }
 @media (prefers-reduced-motion: reduce) {
   html:not([data-motion='on']) { scroll-behavior: auto; }
   html:not([data-motion='on']) *, html:not([data-motion='on']) *::before, html:not([data-motion='on']) *::after { animation: none !important; transition: none !important; }
   html:not([data-motion='on']) .energy-layer { display: none; }
-  html:not([data-motion='on']) .reveal { opacity: 1; transform: none; }
+  html:not([data-motion='on']) .reveal, html:not([data-motion='on']) .sky-eye-fade { opacity: 1; transform: none; }
 }

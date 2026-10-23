@@ -256,13 +256,39 @@ const eyeDrips: [x: number, top: number, bottom: number][] = [
   [-215, 30, 78], [-120, 72, 128], [205, 36, 84], [248, 10, 52],
 ];
 
-function FoolEye() {
+function SkyEye() {
+  const eyeRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const eye = eyeRef.current;
+    const fade = fadeRef.current;
+    const stage = eye?.parentElement;
+    if (!eye || !fade || !stage) return;
+    const relocate = (event: AnimationEvent) => {
+      if (event.target !== fade) return;
+      const centerX = stage.clientWidth * (0.1 + Math.random() * 0.8);
+      const centerY = stage.clientHeight * (0.1 + Math.random() * 0.5);
+      const scale = 0.65 + Math.random() * 0.45;
+      const x = centerX - eye.offsetWidth / 2 - eye.offsetLeft;
+      const y = centerY - eye.offsetHeight * 0.465 - eye.offsetTop;
+      eye.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale.toFixed(2)})`;
+    };
+    fade.addEventListener("animationiteration", relocate);
+    return () => fade.removeEventListener("animationiteration", relocate);
+  }, []);
+
   return (
-    <div className="fool-eye" aria-hidden="true">
-      <div className="fool-eye-float">
-        <svg className="fool-eye-outer" viewBox="-280 -270 560 580">
-          <g className="eye-ink">
-            <path d="M-270 0Q0-200 270 0Q0 200-270 0Z" />
+    <div className="sky-eye" ref={eyeRef} aria-hidden="true">
+      <div className="sky-eye-fade" ref={fadeRef}>
+        <div className="sky-eye-bob">
+          <svg className="eye-defs" width="0" height="0">
+            <clipPath id="eye-socket-clip" clipPathUnits="objectBoundingBox">
+              <path d="M0 .5Q.5-.5 1 .5Q.5 1.5 0 .5Z" />
+            </clipPath>
+          </svg>
+          <svg className="eye-frame" viewBox="-280 -270 560 580">
+            <path d="M-270 0Q0-200 270 0Q0 200-270 0ZM-215 0Q0 130 215 0Q0-130-215 0Z" />
             <path d="M-205-40Q-188-120-160-178Q-140-112-112-64Z" />
             <path d="M205-40Q188-120 160-178Q140-112 112-64Z" />
             <path d="M-46-88Q-10-150 0-265Q10-150 46-88Z" />
@@ -270,26 +296,32 @@ function FoolEye() {
             {eyeDrips.map(([x, top, bottom]) => (
               <rect key={x} x={x - 7} y={top} width="14" height={bottom - top} rx="7" />
             ))}
-          </g>
-        </svg>
-        <svg className="fool-eye-inner" viewBox="-280 -270 560 580">
-          <path d="M-215 0Q0-130 215 0Q0 130-215 0Z" className="eye-white" />
-          <path d="M0-118Q72 0 0 128Q-72 0 0-118Z" className="eye-ink" />
-          <ellipse rx="20" ry="40" className="eye-lens" />
-        </svg>
+          </svg>
+          <div className="eye-socket">
+            <svg className="eye-iris" viewBox="-75 -75 150 150">
+              <path d="M-75 0A75 75 0 1 0 75 0A75 75 0 1 0-75 0ZM0-40Q16 0 0 40Q-16 0 0-40Z" fillRule="evenodd" />
+            </svg>
+            <svg className="eye-lid" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0 0H100V60Q50 140 0 60Z" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function CrimsonMoon() {
+function CrescentMoon() {
   return (
-    <div className="crimson-moon" aria-hidden="true">
-      <svg viewBox="-110 -110 220 220">
-        <circle r="100" className="moon-disc" />
-        <circle cx="-34" cy="-30" r="20" className="moon-crater" />
-        <circle cx="38" cy="18" r="28" className="moon-crater" />
-        <circle cx="-18" cy="52" r="13" className="moon-crater" />
+    <div className="crescent-moon" aria-hidden="true">
+      <svg viewBox="-120 -120 240 240">
+        <defs>
+          <linearGradient id="moon-shade" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" style={{ stopColor: "var(--moon)" }} />
+            <stop offset="1" style={{ stopColor: "var(--moon-crater)" }} />
+          </linearGradient>
+        </defs>
+        <path d="M0.2-100A100 100 0 1 0 87.7 48.1A86 86 0 0 1 0.2-100Z" className="moon-disc" />
       </svg>
     </div>
   );
@@ -688,6 +720,8 @@ export default function App() {
         <section className="hero container" id="home" tabIndex={-1} aria-labelledby="hero-title">
           <div className="hero-stage" ref={heroStageRef}>
             <SparkleLayer />
+            <SkyEye />
+            <CrescentMoon />
             <BirdLayer />
             <CloudStrip className="cloud-back" clouds={[[40, 100, 0.6], [420, 70, 0.45], [700, 110, 0.9], [1010, 95, 0.7]]} />
             <TownStrip kind="far" />
@@ -712,8 +746,6 @@ export default function App() {
               </div>
             </div>
             <div className="hero-art">
-              <CrimsonMoon />
-              <FoolEye />
               <MiniCard className="mini-card-left" rotate={-14} />
               <MiniCard className="mini-card-right" rotate={12} />
               <figure className="hero-card">
