@@ -148,7 +148,7 @@ p { font-size: 18px; line-height: 1.7; }
 .hero-card { position: relative; margin: 0; transform: rotate(3deg); animation: card-float 8s ease-in-out infinite; will-change: transform; }
 .hero-card img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid var(--card-face); box-shadow: 0 0 60px var(--moon-halo), 0 22px 44px #2a0e0a40; }
 .hero-card figcaption { width: fit-content; margin: 16px auto 0; padding: 6px 16px; border-radius: 999px; background: var(--surface); color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
-.sky-eye { position: absolute; z-index: -1; left: calc(55% - 380px); top: -130px; width: 760px; aspect-ratio: 560 / 580; pointer-events: none; color: var(--town-far); transform-origin: 50% 46.5%; will-change: transform; }
+.sky-eye { position: absolute; z-index: -1; left: calc(55% - 70px); top: 70px; width: 140px; aspect-ratio: 560 / 580; pointer-events: none; color: var(--town-far); transform-origin: 50% 46.5%; will-change: transform; }
 .sky-eye-fade, .sky-eye-bob { position: absolute; inset: 0; }
 .sky-eye-fade { opacity: 0; animation: eye-appear 11s ease-in-out infinite; will-change: opacity; }
 .sky-eye-bob { animation: eye-bob 6s ease-in-out infinite alternate; will-change: transform; }
@@ -301,7 +301,7 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 
 @media (max-width: 1024px) {
   .hero-content { padding-left: 44px; }
-  .sky-eye { left: calc(52% - 310px); top: -100px; width: 620px; }
+  .sky-eye { left: calc(52% - 60px); top: 60px; width: 120px; }
   .crescent-moon { left: calc(52% - 110px); bottom: 150px; width: 76px; }
   .mini-card-left { left: -90px; }
   .project-grid, .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -325,7 +325,7 @@ details[open] > summary > .icon { transform: rotate(180deg); }
   .bird-layer { display: none; }
   .sparkle-layer { top: 0; height: 45%; }
   .town-strip { width: 1800px; height: 225px; }
-  .sky-eye { left: calc(50% - 240px); top: -40px; width: 480px; }
+  .sky-eye { left: calc(50% - 50px); top: 40px; width: 100px; }
   .crescent-moon { left: auto; right: 2px; bottom: 128px; width: 46px; }
   .hero-content { padding: 44px 24px 0; max-width: none; }
   .hero h1 { font-size: clamp(36px, 9vw, 52px); }

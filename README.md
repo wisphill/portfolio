@@ -51,6 +51,8 @@ Official reference: [Deploy a React site to Cloudflare Pages](https://developers
 
 The portfolio content is based on the supplied CV. Dates labeled “present” reflect that document. Update those dates as your experience changes. The AWS credential is shown with its 2023 award year, without making a claim about current certification validity. The full original CV is included in the public download.
 
+For how the hero scene, animations, random eye placement, and GPU performance work, see `docs/NOTES.md`.
+
 ## Interaction and accessibility
 
 - Navigation, project cards, and the journey timeline send an energy trail from the previous interaction (or the header seal) to the selected element.
