@@ -24,21 +24,18 @@ The build runs TypeScript checks and produces a complete static website in `dist
 
 ## Deploy to Cloudflare Pages
 
-The site is prepared for deployment; it has not been published.
+Pushes to `main`, and manual runs of **Deploy to Cloudflare Pages**, build the site and publish `dist/` with [Wrangler](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/). The workflow is `.github/workflows/pages-deployment.yml`. It targets a Direct Upload Pages project named `phi-nguyen-portfolio`, with `main` as the production branch. The first successful run creates that project when it does not exist yet. The default hostname is `https://phi-nguyen-portfolio.pages.dev`.
 
-For a Git-connected Cloudflare Pages project:
+Create a Cloudflare API token with **Account → Cloudflare Pages → Edit**, and copy the account ID from the dashboard. In the GitHub repository, add both as Actions secrets:
 
-| Setting                | Value           |
-| ---------------------- | --------------- |
-| Framework preset       | React (Vite)    |
-| Build command          | `npm run build` |
-| Build output directory | `dist`          |
-| Root directory         | Repository root |
-| Node.js                | 22.12+          |
+| Secret                   | Value                                      |
+| ------------------------ | ------------------------------------------ |
+| `CLOUDFLARE_API_TOKEN`   | API token with Cloudflare Pages edit       |
+| `CLOUDFLARE_ACCOUNT_ID`  | Cloudflare account ID                      |
 
-Alternatively, run `npm ci && npm run build` locally and upload the **contents of `dist/`** through Cloudflare Pages Direct Upload. No Worker or server is needed. The site uses in-page hash navigation, so there are no server routes to configure. `public/_headers` is copied into the build for basic response headers and caching of fingerprinted assets.
+No Worker or server is needed. The site uses in-page hash navigation, so there are no server routes to configure. `public/_headers` is copied into the build for basic response headers and caching of fingerprinted assets.
 
-Official reference: [Deploy a React site to Cloudflare Pages](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/).
+Official reference: [Use Direct Upload with continuous integration](https://developers.cloudflare.com/pages/how-to/use-direct-upload-with-continuous-integration/).
 
 ## Edit the content
 
