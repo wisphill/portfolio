@@ -282,27 +282,33 @@ function SkyEye() {
     <div className="sky-eye" ref={eyeRef} aria-hidden="true">
       <div className="sky-eye-fade" ref={fadeRef}>
         <div className="sky-eye-bob">
-          <svg className="eye-defs" width="0" height="0">
-            <clipPath id="eye-socket-clip" clipPathUnits="objectBoundingBox">
-              <path d="M0 .5Q.5-.5 1 .5Q.5 1.5 0 .5Z" />
-            </clipPath>
-          </svg>
           <svg className="eye-frame" viewBox="-280 -270 560 580">
-            <path d="M-270 0Q0-200 270 0Q0 200-270 0ZM-215 0Q0 130 215 0Q0-130-215 0Z" />
-            <path d="M-205-40Q-188-120-160-178Q-140-112-112-64Z" />
-            <path d="M205-40Q188-120 160-178Q140-112 112-64Z" />
-            <path d="M-46-88Q-10-150 0-265Q10-150 46-88Z" />
-            <path d="M-42 88Q-8 160 0 305Q8 160 42 88Z" />
-            {eyeDrips.map(([x, top, bottom]) => (
-              <rect key={x} x={x - 7} y={top} width="14" height={bottom - top} rx="7" />
-            ))}
+            <defs>
+              <linearGradient id="eye-fade" x1="0" y1="0" x2="0" y2="1">
+                <stop offset=".58" stopColor="#fff" />
+                <stop offset=".95" stopColor="#fff" stopOpacity="0" />
+              </linearGradient>
+              <mask id="eye-fade-mask" maskContentUnits="userSpaceOnUse">
+                <rect x="-280" y="-270" width="560" height="580" fill="url(#eye-fade)" />
+              </mask>
+            </defs>
+            <g mask="url(#eye-fade-mask)">
+              <path d="M-270 0Q0-200 270 0Q0 200-270 0ZM-215 0Q0 130 215 0Q0-130-215 0Z" />
+              <path d="M-205-40Q-188-120-160-178Q-140-112-112-64Z" />
+              <path d="M205-40Q188-120 160-178Q140-112 112-64Z" />
+              <path d="M-46-88Q-10-150 0-265Q10-150 46-88Z" />
+              <path d="M-42 88Q-8 160 0 305Q8 160 42 88Z" />
+              {eyeDrips.map(([x, top, bottom]) => (
+                <rect key={x} x={x - 7} y={top} width="14" height={bottom - top} rx="7" />
+              ))}
+            </g>
           </svg>
           <div className="eye-socket">
-            <svg className="eye-iris" viewBox="-75 -75 150 150">
-              <path d="M-75 0A75 75 0 1 0 75 0A75 75 0 1 0-75 0ZM0-40Q16 0 0 40Q-16 0 0-40Z" fillRule="evenodd" />
+            <svg className="eye-iris" viewBox="-55 -55 110 110">
+              <path d="M-55 0A55 55 0 1 0 55 0A55 55 0 1 0-55 0ZM0-30Q12 0 0 30Q-12 0 0-30Z" fillRule="evenodd" />
             </svg>
             <svg className="eye-lid" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M0 0H100V60Q50 140 0 60Z" />
+              <path d="M0 50Q50-50 100 50Q50 150 0 50Z" />
             </svg>
           </div>
         </div>
@@ -329,7 +335,7 @@ function CrescentMoon() {
 
 function SparkleLayer() {
   return (
-    <svg className="scene-layer sparkle-layer" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <svg className="scene-layer sparkle-layer" viewBox="0 0 1200 320" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
       {sparkles.map(([x, y, s], i) => (
         <path
           key={i}
@@ -342,7 +348,7 @@ function SparkleLayer() {
 
 function BirdLayer() {
   return (
-    <svg className="scene-layer bird-layer" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <svg className="bird-layer" viewBox="1040 30 120 100" aria-hidden="true">
       <path d="M1050 70q8-8 16 0q8-8 16 0" />
       <path d="M1100 45q6-6 12 0q6-6 12 0" />
       <path d="M1130 120q7-7 14 0q7-7 14 0" />
@@ -389,7 +395,7 @@ function CursorTrail({ enabled }: { enabled: boolean }) {
     if (!enabled || !canvas || !ctx || !window.matchMedia("(pointer: fine)").matches) return;
     const life = 420;
     const points: TrailPoint[] = [];
-    const dpr = Math.min(window.devicePixelRatio, 1.5);
+    const dpr = 1;
     let color = "";
     let core = "";
     let frame = 0;
@@ -415,6 +421,7 @@ function CursorTrail({ enabled }: { enabled: boolean }) {
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       if (points.length < 2) {
         frame = 0;
+        canvas.style.visibility = "hidden";
         return;
       }
       ctx.strokeStyle = color;
@@ -443,6 +450,7 @@ function CursorTrail({ enabled }: { enabled: boolean }) {
         const styles = getComputedStyle(document.documentElement);
         color = styles.getPropertyValue("--accent").trim();
         core = styles.getPropertyValue("--gold").trim();
+        canvas.style.visibility = "visible";
         frame = requestAnimationFrame(draw);
       }
     };
@@ -852,18 +860,10 @@ export default function App() {
 
       {energy && (
         <svg className="energy-layer" key={energy.id} aria-hidden="true">
-          <defs>
-            <filter id="energy-glow" x="-100%" y="-100%" width="300%" height="300%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
           <path d={energy.path} className="energy-ghost" />
-          <path d={energy.path} pathLength="1000" className="energy-trail" filter="url(#energy-glow)" />
-          <circle r="3.5" fill="#fff0c9" filter="url(#energy-glow)">
+          <path d={energy.path} pathLength="1000" className="energy-trail energy-trail-glow" />
+          <path d={energy.path} pathLength="1000" className="energy-trail" />
+          <circle r="3.5" fill="#fff0c9">
             <animateMotion dur="0.6s" path={energy.path} fill="freeze" />
           </circle>
           <circle cx={energy.x} cy={energy.y} r="24" className="energy-arrival" />

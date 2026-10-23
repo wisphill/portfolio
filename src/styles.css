@@ -127,8 +127,8 @@ p { font-size: 18px; line-height: 1.7; }
 .hero { padding-top: 28px; }
 .hero-stage { position: relative; isolation: isolate; overflow: hidden; contain: layout paint; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; min-height: 600px; border-radius: 40px; border: 1px solid var(--border); background: linear-gradient(var(--sky-top), var(--sky-mid) 55%, var(--sky-bottom)); box-shadow: var(--shadow); }
 .scene-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-.bird-layer { fill: none; stroke: var(--bird); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .8; animation: glide 14s ease-in-out infinite alternate; will-change: transform; }
-.sparkle-layer { fill: var(--sparkle); stroke: var(--sparkle); stroke-width: 4; stroke-linejoin: round; animation: twinkle 5s ease-in-out infinite alternate; will-change: opacity; }
+.bird-layer { position: absolute; z-index: -1; right: 2%; top: 4%; width: 130px; height: 108px; pointer-events: none; overflow: visible; fill: none; stroke: var(--bird); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .8; animation: glide 14s ease-in-out infinite alternate; will-change: transform; }
+.sparkle-layer { height: 55%; fill: var(--sparkle); stroke: var(--sparkle); stroke-width: 4; stroke-linejoin: round; animation: twinkle 5s ease-in-out infinite alternate; will-change: opacity; }
 .town-strip { position: absolute; left: 0; bottom: 0; z-index: -1; width: 2400px; height: 300px; pointer-events: none; animation: drift 150s linear infinite; will-change: transform; }
 .town-far .town-shapes { fill: var(--town-far); stroke: var(--town-far); stroke-width: 14; stroke-linejoin: round; }
 .town-near { animation-duration: 90s; }
@@ -148,15 +148,14 @@ p { font-size: 18px; line-height: 1.7; }
 .hero-card { position: relative; margin: 0; transform: rotate(3deg); animation: card-float 8s ease-in-out infinite; will-change: transform; }
 .hero-card img { display: block; width: 100%; height: auto; border-radius: 22px; border: 6px solid var(--card-face); box-shadow: 0 0 60px var(--moon-halo), 0 22px 44px #2a0e0a40; }
 .hero-card figcaption { width: fit-content; margin: 16px auto 0; padding: 6px 16px; border-radius: 999px; background: var(--surface); color: var(--accent); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
-.sky-eye { position: absolute; z-index: -1; left: calc(55% - 380px); top: -130px; width: 760px; aspect-ratio: 560 / 580; pointer-events: none; color: var(--town-far); -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 88%); mask-image: linear-gradient(to bottom, #000 30%, transparent 88%); transform-origin: 50% 46.5%; will-change: transform; }
+.sky-eye { position: absolute; z-index: -1; left: calc(55% - 380px); top: -130px; width: 760px; aspect-ratio: 560 / 580; pointer-events: none; color: var(--town-far); transform-origin: 50% 46.5%; will-change: transform; }
 .sky-eye-fade, .sky-eye-bob { position: absolute; inset: 0; }
 .sky-eye-fade { opacity: 0; animation: eye-appear 11s ease-in-out infinite; will-change: opacity; }
 .sky-eye-bob { animation: eye-bob 6s ease-in-out infinite alternate; will-change: transform; }
-.eye-defs { position: absolute; }
 .eye-frame { position: absolute; inset: 0; width: 100%; height: 100%; fill: currentColor; stroke: currentColor; stroke-width: 16; stroke-linejoin: round; }
-.eye-socket { position: absolute; left: 13.04%; top: 36.72%; width: 73.93%; height: 19.66%; clip-path: url(#eye-socket-clip); }
-.eye-iris { position: absolute; left: 31.9%; top: -15.8%; width: 36.2%; height: 131.6%; fill: currentColor; animation: look-around 16s ease-in-out infinite; will-change: transform; }
-.eye-lid { position: absolute; inset: -4% -2%; width: 104%; height: 108%; fill: currentColor; transform-origin: top; transform: scaleY(0); animation: eyelid 9s ease-in-out infinite; will-change: transform; }
+.eye-socket { position: absolute; left: 13.04%; top: 36.72%; width: 73.93%; height: 19.66%; }
+.eye-iris { position: absolute; left: 36.7%; top: 1.75%; width: 26.6%; height: 96.5%; fill: currentColor; animation: look-around 16s ease-in-out infinite; will-change: transform; }
+.eye-lid { position: absolute; inset: 0; width: 100%; height: 100%; fill: currentColor; transform-origin: top; transform: scaleY(0); animation: eyelid 9s ease-in-out infinite; will-change: transform; }
 .crescent-moon { position: absolute; z-index: -1; left: calc(55% - 125px); bottom: 165px; width: 90px; opacity: .9; aspect-ratio: 1; pointer-events: none; animation: moon-orbit 30s ease-in-out infinite; will-change: transform; }
 .crescent-moon::before { content: ""; position: absolute; inset: -35%; border-radius: 50%; background: radial-gradient(closest-side, var(--moon-glow), transparent); }
 .crescent-moon svg { position: relative; display: block; width: 100%; height: 100%; }
@@ -176,7 +175,7 @@ p { font-size: 18px; line-height: 1.7; }
 .reveal.is-visible { opacity: 1; transform: none; }
 .project-grid > .reveal:nth-child(3n+2), .skill-grid > .reveal:nth-child(2), .timeline > .reveal:nth-child(2) { transition-delay: .1s; }
 .project-grid > .reveal:nth-child(3n), .skill-grid > .reveal:nth-child(3), .timeline > .reveal:nth-child(3) { transition-delay: .2s; }
-.cursor-trail { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 95; pointer-events: none; }
+.cursor-trail { visibility: hidden; position: fixed; inset: 0; width: 100%; height: 100%; z-index: 95; pointer-events: none; }
 
 .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 15px 26px; border-radius: 999px; font-size: 17px; font-weight: 700; transition: transform .2s, box-shadow .2s; }
 .button-primary { background: var(--primary); color: var(--primary-text); box-shadow: 0 8px 22px #c43c2a33; }
@@ -253,6 +252,7 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 .energy-layer { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 90; }
 .energy-ghost { stroke: var(--gold); fill: none; stroke-width: 1.5; animation: ghost 1.2s ease both; }
 .energy-trail { stroke: var(--accent); fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100 1000; animation: flow .65s ease-in-out both; }
+.energy-trail-glow { stroke-width: 9; opacity: .25; }
 .energy-layer > circle:not(.energy-arrival) { animation: spark-fade .8s linear both; }
 .energy-arrival { fill: none; stroke: var(--accent); stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: arrival .6s .5s ease-out both; }
 
@@ -277,15 +277,15 @@ details[open] > summary > .icon { transform: rotate(180deg); }
 @keyframes eye-bob { from { transform: translate3d(0, -14px, 0); } to { transform: translate3d(0, 14px, 0); } }
 @keyframes look-around {
   0%, 8% { transform: translate3d(0, 0, 0); }
-  14%, 28% { transform: translate3d(-78%, 0, 0); }
-  34%, 48% { transform: translate3d(78%, 0, 0); }
-  56% { transform: translate3d(55%, -14%, 0); }
-  62% { transform: translate3d(0, -18%, 0); }
-  68% { transform: translate3d(-55%, -14%, 0); }
-  74% { transform: translate3d(-78%, 0, 0); }
-  80% { transform: translate3d(-55%, 12%, 0); }
-  86% { transform: translate3d(0, 16%, 0); }
-  92% { transform: translate3d(55%, 12%, 0); }
+  14%, 28% { transform: translate3d(-70%, 0, 0); }
+  34%, 48% { transform: translate3d(70%, 0, 0); }
+  56% { transform: translate3d(50%, -7%, 0); }
+  62% { transform: translate3d(0, -9%, 0); }
+  68% { transform: translate3d(-50%, -7%, 0); }
+  74% { transform: translate3d(-70%, 0, 0); }
+  80% { transform: translate3d(-50%, 7%, 0); }
+  86% { transform: translate3d(0, 9%, 0); }
+  92% { transform: translate3d(50%, 7%, 0); }
   100% { transform: translate3d(0, 0, 0); }
 }
 @keyframes eyelid { 0%, 40%, 47%, 88%, 95%, 100% { transform: scaleY(0); } 43.5%, 91.5% { transform: scaleY(1); } }
@@ -323,6 +323,7 @@ details[open] > summary > .icon { transform: rotate(180deg); }
   .hero-stage { grid-template-columns: 1fr; min-height: 0; border-radius: 32px; text-align: center; }
   .scene-layer { top: auto; height: 520px; }
   .bird-layer { display: none; }
+  .sparkle-layer { top: 0; height: 45%; }
   .town-strip { width: 1800px; height: 225px; }
   .sky-eye { left: calc(50% - 240px); top: -40px; width: 480px; }
   .crescent-moon { left: auto; right: 2px; bottom: 128px; width: 46px; }
